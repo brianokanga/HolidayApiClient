@@ -1,6 +1,7 @@
 ﻿using HolidayApiClient.Models;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HolidayApiClient.Services
@@ -17,9 +18,24 @@ namespace HolidayApiClient.Services
 			};
 		}
 
-		public Task<List<HolidayModel>> GetHolidays(string countryCode, int year)
+		public async Task<List<HolidayModel>> GetHolidays(string countryCode, int year)
 		{
-			throw new System.NotImplementedException();
+			var url = string.Format("/api/v2/PublicHolidays/{0}/{1}", 
+				countryCode, year);
+			var result = new List<HolidayModel>();
+			var response = await client.GetAsync(url);
+			if (response.IsSuccessStatusCode) 
+			{
+				var stringResponse = await response.Content.ReadAsStringAsync();
+				result = JsonSerializer.Deserialize<List<HolidayModel>>(
+					stringResponse,new JsonSerializerOptions() 
+					{ PropertyNamingPolicy = JsonNamingPolicy.CamelCase});
+			}
+			else
+			{
+				throw new HttpRequestException(response.ReasonPhrase);
+			}
+			return result;
 		}
 	}
 }
