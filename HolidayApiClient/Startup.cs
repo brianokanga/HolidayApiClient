@@ -1,4 +1,5 @@
 using HolidayApiClient.Data;
+using HolidayApiClient.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,6 +36,7 @@ namespace HolidayApiClient
 			services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 				.AddEntityFrameworkStores<ApplicationDbContext>();
 			services.AddControllersWithViews();
+			services.AddSingleton<IHolidaysApiService, HolidaysApiService>();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
