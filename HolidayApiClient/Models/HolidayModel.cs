@@ -9,6 +9,5 @@ namespace HolidayApiClient.Models
 		public DateTime? Date { get; set; }
 		public string CountryCode { get; set;}
 		public bool	Global { get; set;}
-
 	}
 }
